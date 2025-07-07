@@ -103,9 +103,24 @@ impl Lexer {
                     }
                 }
 
-                invalid_char => {
-                    token_type = Some(TokenType::InvalidChar);
-                    lexical_error = Some(LexicalError::UnexpectedChar(line, invalid_char));
+                other_char => {
+                    if is_char_digit(other_char) {
+                        let mut entire_number = String::new();
+                        entire_number.push(other_char);
+
+                        while let Some(&next_char) = input_chars.peek() {
+                            if is_char_digit(next_char) || next_char == '.' {
+                                entire_number.push(input_chars.next().unwrap());
+                            } else {
+                                break;
+                            }
+                        }
+
+                        token_type = Some(TokenType::Number(entire_number))
+                    } else {
+                        token_type = Some(TokenType::InvalidChar);
+                        lexical_error = Some(LexicalError::UnexpectedChar(line, other_char));
+                    }
                 }
             }
 
@@ -146,4 +161,9 @@ impl Lexer {
 
         writeln!(stdout_stream, "EOF  null").unwrap();
     }
+}
+
+#[inline(always)]
+fn is_char_digit(char: char) -> bool {
+    char >= '0' && char <= '9'
 }

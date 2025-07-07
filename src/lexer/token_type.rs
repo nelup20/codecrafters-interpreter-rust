@@ -19,6 +19,7 @@ pub enum TokenType {
     GreaterThanOrEqual,
     Slash,
     StringLiteral(String),
+    Number(String),
     InvalidChar
 }
 
@@ -44,10 +45,14 @@ impl TokenType {
             TokenType::LessThanOrEqual => "LESS_EQUAL <= null".to_string(),
             TokenType::GreaterThanOrEqual => "GREATER_EQUAL >= null".to_string(),
             TokenType::Slash => "SLASH / null".to_string(),
-            TokenType::InvalidChar => "INVALID CHAR".to_string(),
+            TokenType::Number(number) => {
+                let parsed_number: f64 = number.parse().unwrap();
+                format!("NUMBER {number} {parsed_number:?}")
+            },
             TokenType::StringLiteral(literal_value) => {
                 format!("STRING \"{}\" {}", literal_value, literal_value)
             }
+            TokenType::InvalidChar => "INVALID CHAR".to_string(),
         }
     }
 }
