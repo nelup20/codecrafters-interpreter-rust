@@ -20,21 +20,24 @@ impl Lexer {
         let mut line = 0;
 
         for char in input.chars() {
+            let mut token_type: Option<TokenType> = None;
+
             match char {
-                '(' => self.tokens.push(Token {
-                    token_type: TokenType::LeftParen,
-                    column,
-                    line,
-                }),
-
-                ')' => self.tokens.push(Token {
-                    token_type: TokenType::RightParen,
-                    column,
-                    line,
-                }),
-
+                '(' => token_type = Some(TokenType::LeftParen),
+                ')' => token_type = Some(TokenType::RightParen),
+                '{' => token_type = Some(TokenType::LeftBrace),
+                '}' => token_type = Some(TokenType::RightBrace),
                 '\n' => line += 1,
                 _ => {}
+            }
+
+            match token_type {
+                None => {}
+                Some(token_type) => self.tokens.push(Token {
+                    token_type,
+                    line,
+                    column,
+                }),
             }
 
             column += 1;
