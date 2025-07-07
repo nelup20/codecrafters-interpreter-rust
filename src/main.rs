@@ -1,7 +1,7 @@
+use codecrafters_interpreter::Lexer;
 use std::env;
 use std::fs;
 use std::io::{self, Write};
-use codecrafters_interpreter::Lexer;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -27,7 +27,11 @@ fn main() {
 
             let mut lexer = Lexer::new();
             lexer.scan_input(&file_contents);
-            lexer.write_tokens_to_stream(&mut io::stdout());
+            lexer.write_tokens_to_stream(&mut io::stdout(), &mut io::stderr());
+
+            if lexer.has_errors {
+                std::process::exit(65);
+            }
         }
         _ => {
             writeln!(io::stderr(), "Unknown command: {}", command).unwrap();

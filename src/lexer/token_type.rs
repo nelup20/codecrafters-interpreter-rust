@@ -9,7 +9,8 @@ pub enum TokenType {
     Comma,
     Plus,
     Minus,
-    Semicolon
+    Semicolon,
+    Invalid(char)
 }
 
 impl TokenType {
@@ -25,6 +26,7 @@ impl TokenType {
             TokenType::Plus => "PLUS + null",
             TokenType::Minus => "MINUS - null",
             TokenType::Semicolon => "SEMICOLON ; null",
+            TokenType::Invalid(_) => "INVALID null",
         }
     }
 }

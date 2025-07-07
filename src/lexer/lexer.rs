@@ -4,20 +4,20 @@ use std::io::Write;
 
 pub struct Lexer {
     tokens: Vec<Token>,
-    has_error: bool,
+    pub has_errors: bool,
 }
 
 impl Lexer {
     pub fn new() -> Self {
         Self {
             tokens: vec![],
-            has_error: false,
+            has_errors: false,
         }
     }
 
     pub fn scan_input(&mut self, input: &str) {
         let mut column = 0;
-        let mut line = 0;
+        let mut line = 1;
 
         for char in input.chars() {
             let mut token_type: Option<TokenType> = None;
@@ -34,7 +34,10 @@ impl Lexer {
                 '.' => token_type = Some(TokenType::Dot),
                 ';' => token_type = Some(TokenType::Semicolon),
                 '\n' => line += 1,
-                _ => {}
+                invalid_char => {
+                    token_type = Some(TokenType::Invalid(invalid_char));
+                    self.has_errors = true;
+                }
             }
 
             match token_type {
@@ -50,11 +53,23 @@ impl Lexer {
         }
     }
 
-    pub fn write_tokens_to_stream(&self, output_stream: &mut dyn Write) {
+    pub fn write_tokens_to_stream(
+        &self,
+        stdout_stream: &mut dyn Write,
+        stderr_stream: &mut dyn Write,
+    ) {
         for token in &self.tokens {
-            writeln!(output_stream, "{}", token.as_str());
+            match token.token_type {
+                TokenType::Invalid(_) => {
+                    writeln!(stderr_stream, "{}", token.as_string());
+                }
+
+                _ => {
+                    writeln!(stdout_stream, "{}", token.as_string());
+                }
+            }
         }
 
-        writeln!(output_stream, "EOF  null");
+        writeln!(stdout_stream, "EOF  null");
     }
 }
