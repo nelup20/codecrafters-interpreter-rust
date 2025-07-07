@@ -35,6 +35,7 @@ impl Lexer {
                 '.' => token_type = Some(TokenType::Dot),
                 ';' => token_type = Some(TokenType::Semicolon),
                 '\n' => line += 1,
+                '\t' | ' ' => {},
 
                 '!' => match input_chars.peek() {
                     Some('=') => {
