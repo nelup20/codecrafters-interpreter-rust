@@ -1,3 +1,5 @@
+use crate::lexer::reserved_keyword::ReservedKeyword;
+
 pub enum TokenType {
     LeftParen,
     RightParen,
@@ -21,6 +23,7 @@ pub enum TokenType {
     StringLiteral(String),
     Number(String),
     Identifier(String),
+    Reserved(ReservedKeyword),
     InvalidChar,
 }
 
@@ -46,6 +49,7 @@ impl TokenType {
             TokenType::LessThanOrEqual => "LESS_EQUAL <= null".to_string(),
             TokenType::GreaterThanOrEqual => "GREATER_EQUAL >= null".to_string(),
             TokenType::Slash => "SLASH / null".to_string(),
+            TokenType::Reserved(keyword) => keyword.as_string(),
             TokenType::Number(number) => {
                 let parsed_number: f64 = number.parse().unwrap();
                 format!("NUMBER {number} {parsed_number:?}")

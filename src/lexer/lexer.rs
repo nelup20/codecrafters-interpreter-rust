@@ -1,4 +1,5 @@
 use crate::lexer::error::LexicalError;
+use crate::lexer::reserved_keyword::ReservedKeyword;
 use crate::lexer::token::Token;
 use crate::lexer::token_type::TokenType;
 use std::io::Write;
@@ -129,7 +130,12 @@ impl Lexer {
                             }
                         }
 
-                        token_type = Some(TokenType::Identifier(entire_identifier));
+                        if ReservedKeyword::is_reserved_keyword(&entire_identifier) {
+                            let reserved_keyword = ReservedKeyword::from_str(&entire_identifier);
+                            token_type = Some(TokenType::Reserved(reserved_keyword))
+                        } else {
+                            token_type = Some(TokenType::Identifier(entire_identifier));
+                        }
                     } else {
                         token_type = Some(TokenType::InvalidChar);
                         lexical_error = Some(LexicalError::UnexpectedChar(line, other_char));
