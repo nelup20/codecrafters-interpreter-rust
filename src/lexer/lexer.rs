@@ -27,6 +27,12 @@ impl Lexer {
                 ')' => token_type = Some(TokenType::RightParen),
                 '{' => token_type = Some(TokenType::LeftBrace),
                 '}' => token_type = Some(TokenType::RightBrace),
+                '*' => token_type = Some(TokenType::Star),
+                '+' => token_type = Some(TokenType::Plus),
+                '-' => token_type = Some(TokenType::Minus),
+                ',' => token_type = Some(TokenType::Comma),
+                '.' => token_type = Some(TokenType::Dot),
+                ';' => token_type = Some(TokenType::Semicolon),
                 '\n' => line += 1,
                 _ => {}
             }
