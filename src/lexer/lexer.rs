@@ -68,6 +68,15 @@ impl Lexer {
                     _ => token_type = Some(TokenType::GreaterThan),
                 },
 
+                '/' => match input_chars.peek() {
+                    Some('/') => {
+                        while input_chars.peek().is_some_and(|&char| char != '\n') {
+                            input_chars.next();
+                        }
+                    }
+                    _ => token_type = Some(TokenType::Slash),
+                },
+
                 invalid_char => {
                     token_type = Some(TokenType::Invalid(invalid_char));
                     self.has_errors = true;

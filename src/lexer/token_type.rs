@@ -18,6 +18,7 @@ pub enum TokenType {
     GreaterThan,
     LessThanOrEqual,
     GreaterThanOrEqual,
+    Slash,
     Invalid(char)
 }
 
@@ -42,6 +43,7 @@ impl TokenType {
             TokenType::GreaterThan => "GREATER > null",
             TokenType::LessThanOrEqual => "LESS_EQUAL <= null",
             TokenType::GreaterThanOrEqual => "GREATER_EQUAL >= null",
+            TokenType::Slash => "SLASH / null",
             TokenType::Invalid(_) => "INVALID null",
         }
     }
