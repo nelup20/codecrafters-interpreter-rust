@@ -19,7 +19,8 @@ impl Lexer {
         let mut column = 0;
         let mut line = 1;
 
-        for char in input.chars() {
+        let mut input_chars = input.chars().peekable();
+        while let Some(char) = input_chars.next() {
             let mut token_type: Option<TokenType> = None;
 
             match char {
@@ -33,6 +34,15 @@ impl Lexer {
                 ',' => token_type = Some(TokenType::Comma),
                 '.' => token_type = Some(TokenType::Dot),
                 ';' => token_type = Some(TokenType::Semicolon),
+                '=' => match input_chars.peek() {
+                    Some('=') => {
+                        token_type = Some(TokenType::DoubleEqual);
+                        input_chars.next();
+                    },
+                    _ => {
+                        token_type = Some(TokenType::Equal)
+                    }
+                },
                 '\n' => line += 1,
                 invalid_char => {
                     token_type = Some(TokenType::Invalid(invalid_char));
@@ -51,6 +61,7 @@ impl Lexer {
 
             column += 1;
         }
+
     }
 
     pub fn write_tokens_to_stream(

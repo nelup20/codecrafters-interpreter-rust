@@ -10,6 +10,8 @@ pub enum TokenType {
     Plus,
     Minus,
     Semicolon,
+    Equal,
+    DoubleEqual,
     Invalid(char)
 }
 
@@ -26,6 +28,8 @@ impl TokenType {
             TokenType::Plus => "PLUS + null",
             TokenType::Minus => "MINUS - null",
             TokenType::Semicolon => "SEMICOLON ; null",
+            TokenType::Equal => "EQUAL = null",
+            TokenType::DoubleEqual => "EQUAL_EQUAL == null",
             TokenType::Invalid(_) => "INVALID null",
         }
     }
