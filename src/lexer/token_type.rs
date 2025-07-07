@@ -14,6 +14,10 @@ pub enum TokenType {
     DoubleEqual,
     Bang,
     BangEqual,
+    LessThan,
+    GreaterThan,
+    LessThanOrEqual,
+    GreaterThanOrEqual,
     Invalid(char)
 }
 
@@ -34,6 +38,10 @@ impl TokenType {
             TokenType::DoubleEqual => "EQUAL_EQUAL == null",
             TokenType::Bang => "BANG ! null",
             TokenType::BangEqual => "BANG_EQUAL != null",
+            TokenType::LessThan => "LESS < null",
+            TokenType::GreaterThan => "GREATER > null",
+            TokenType::LessThanOrEqual => "LESS_EQUAL <= null",
+            TokenType::GreaterThanOrEqual => "GREATER_EQUAL >= null",
             TokenType::Invalid(_) => "INVALID null",
         }
     }

@@ -34,27 +34,40 @@ impl Lexer {
                 ',' => token_type = Some(TokenType::Comma),
                 '.' => token_type = Some(TokenType::Dot),
                 ';' => token_type = Some(TokenType::Semicolon),
+                '\n' => line += 1,
 
                 '!' => match input_chars.peek() {
                     Some('=') => {
                         token_type = Some(TokenType::BangEqual);
                         input_chars.next();
-                    },
-                    _ => {
-                        token_type = Some(TokenType::Bang)
                     }
+                    _ => token_type = Some(TokenType::Bang),
                 },
 
                 '=' => match input_chars.peek() {
                     Some('=') => {
                         token_type = Some(TokenType::DoubleEqual);
                         input_chars.next();
-                    },
-                    _ => {
-                        token_type = Some(TokenType::Equal)
                     }
+                    _ => token_type = Some(TokenType::Equal),
                 },
-                '\n' => line += 1,
+
+                '<' => match input_chars.peek() {
+                    Some('=') => {
+                        token_type = Some(TokenType::LessThanOrEqual);
+                        input_chars.next();
+                    }
+                    _ => token_type = Some(TokenType::LessThan),
+                },
+
+                '>' => match input_chars.peek() {
+                    Some('=') => {
+                        token_type = Some(TokenType::GreaterThanOrEqual);
+                        input_chars.next();
+                    }
+                    _ => token_type = Some(TokenType::GreaterThan),
+                },
+
                 invalid_char => {
                     token_type = Some(TokenType::Invalid(invalid_char));
                     self.has_errors = true;
@@ -72,7 +85,6 @@ impl Lexer {
 
             column += 1;
         }
-
     }
 
     pub fn write_tokens_to_stream(
