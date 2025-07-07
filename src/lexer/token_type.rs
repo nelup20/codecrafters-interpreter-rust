@@ -20,7 +20,8 @@ pub enum TokenType {
     Slash,
     StringLiteral(String),
     Number(String),
-    InvalidChar
+    Identifier(String),
+    InvalidChar,
 }
 
 impl TokenType {
@@ -48,10 +49,16 @@ impl TokenType {
             TokenType::Number(number) => {
                 let parsed_number: f64 = number.parse().unwrap();
                 format!("NUMBER {number} {parsed_number:?}")
-            },
+            }
+
             TokenType::StringLiteral(literal_value) => {
                 format!("STRING \"{}\" {}", literal_value, literal_value)
             }
+
+            TokenType::Identifier(identifier) => {
+                format!("IDENTIFIER {identifier} null")
+            }
+
             TokenType::InvalidChar => "INVALID CHAR".to_string(),
         }
     }

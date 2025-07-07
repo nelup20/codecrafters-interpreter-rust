@@ -117,6 +117,19 @@ impl Lexer {
                         }
 
                         token_type = Some(TokenType::Number(entire_number))
+                    } else if is_char_letter_or_underscore(other_char) {
+                        let mut entire_identifier = String::new();
+                        entire_identifier.push(other_char);
+
+                        while let Some(&next_char) = input_chars.peek() {
+                            if is_char_alphanumeric(next_char) {
+                                entire_identifier.push(input_chars.next().unwrap());
+                            } else {
+                                break;
+                            }
+                        }
+
+                        token_type = Some(TokenType::Identifier(entire_identifier));
                     } else {
                         token_type = Some(TokenType::InvalidChar);
                         lexical_error = Some(LexicalError::UnexpectedChar(line, other_char));
@@ -164,6 +177,26 @@ impl Lexer {
 }
 
 #[inline(always)]
+fn is_char_alphanumeric(char: char) -> bool {
+    is_char_digit(char) || is_char_letter_or_underscore(char)
+}
+
+#[inline(always)]
 fn is_char_digit(char: char) -> bool {
     char >= '0' && char <= '9'
+}
+
+#[inline(always)]
+fn is_char_letter_or_underscore(char: char) -> bool {
+    is_char_lowercase_letter(char) || is_char_uppercase_letter(char) || char == '_'
+}
+
+#[inline(always)]
+fn is_char_uppercase_letter(char: char) -> bool {
+    char >= 'A' && char <= 'Z'
+}
+
+#[inline(always)]
+fn is_char_lowercase_letter(char: char) -> bool {
+    char >= 'a' && char <= 'z'
 }
