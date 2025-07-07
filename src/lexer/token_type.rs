@@ -1,4 +1,3 @@
-
 pub enum TokenType {
     LeftParen,
     RightParen,
@@ -19,32 +18,36 @@ pub enum TokenType {
     LessThanOrEqual,
     GreaterThanOrEqual,
     Slash,
-    Invalid(char)
+    StringLiteral(String),
+    InvalidChar
 }
 
 impl TokenType {
-    pub fn as_str(&self) -> &str {
+    pub fn as_string(&self) -> String {
         match self {
-            TokenType::LeftParen => "LEFT_PAREN ( null",
-            TokenType::RightParen => "RIGHT_PAREN ) null",
-            TokenType::LeftBrace => "LEFT_BRACE { null",
-            TokenType::RightBrace => "RIGHT_BRACE } null",
-            TokenType::Star => "STAR * null",
-            TokenType::Dot => "DOT . null",
-            TokenType::Comma => "COMMA , null",
-            TokenType::Plus => "PLUS + null",
-            TokenType::Minus => "MINUS - null",
-            TokenType::Semicolon => "SEMICOLON ; null",
-            TokenType::Equal => "EQUAL = null",
-            TokenType::DoubleEqual => "EQUAL_EQUAL == null",
-            TokenType::Bang => "BANG ! null",
-            TokenType::BangEqual => "BANG_EQUAL != null",
-            TokenType::LessThan => "LESS < null",
-            TokenType::GreaterThan => "GREATER > null",
-            TokenType::LessThanOrEqual => "LESS_EQUAL <= null",
-            TokenType::GreaterThanOrEqual => "GREATER_EQUAL >= null",
-            TokenType::Slash => "SLASH / null",
-            TokenType::Invalid(_) => "INVALID null",
+            TokenType::LeftParen => "LEFT_PAREN ( null".to_string(),
+            TokenType::RightParen => "RIGHT_PAREN ) null".to_string(),
+            TokenType::LeftBrace => "LEFT_BRACE { null".to_string(),
+            TokenType::RightBrace => "RIGHT_BRACE } null".to_string(),
+            TokenType::Star => "STAR * null".to_string(),
+            TokenType::Dot => "DOT . null".to_string(),
+            TokenType::Comma => "COMMA , null".to_string(),
+            TokenType::Plus => "PLUS + null".to_string(),
+            TokenType::Minus => "MINUS - null".to_string(),
+            TokenType::Semicolon => "SEMICOLON ; null".to_string(),
+            TokenType::Equal => "EQUAL = null".to_string(),
+            TokenType::DoubleEqual => "EQUAL_EQUAL == null".to_string(),
+            TokenType::Bang => "BANG ! null".to_string(),
+            TokenType::BangEqual => "BANG_EQUAL != null".to_string(),
+            TokenType::LessThan => "LESS < null".to_string(),
+            TokenType::GreaterThan => "GREATER > null".to_string(),
+            TokenType::LessThanOrEqual => "LESS_EQUAL <= null".to_string(),
+            TokenType::GreaterThanOrEqual => "GREATER_EQUAL >= null".to_string(),
+            TokenType::Slash => "SLASH / null".to_string(),
+            TokenType::InvalidChar => "INVALID CHAR".to_string(),
+            TokenType::StringLiteral(literal_value) => {
+                format!("STRING \"{}\" {}", literal_value, literal_value)
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+use crate::lexer::error::LexicalError;
 use crate::lexer::token::Token;
 use crate::lexer::token_type::TokenType;
 use std::io::Write;
@@ -22,6 +23,7 @@ impl Lexer {
         let mut input_chars = input.chars().peekable();
         while let Some(char) = input_chars.next() {
             let mut token_type: Option<TokenType> = None;
+            let mut lexical_error: Option<LexicalError> = None;
 
             match char {
                 '(' => token_type = Some(TokenType::LeftParen),
@@ -35,7 +37,7 @@ impl Lexer {
                 '.' => token_type = Some(TokenType::Dot),
                 ';' => token_type = Some(TokenType::Semicolon),
                 '\n' => line += 1,
-                '\t' | ' ' => {},
+                '\t' | ' ' => {}
 
                 '!' => match input_chars.peek() {
                     Some('=') => {
@@ -78,16 +80,44 @@ impl Lexer {
                     _ => token_type = Some(TokenType::Slash),
                 },
 
-                invalid_char => {
-                    token_type = Some(TokenType::Invalid(invalid_char));
-                    self.has_errors = true;
+                '"' => {
+                    let mut string_is_terminated = false;
+                    let mut literal_value = String::new();
+
+                    while let Some(next_char) = input_chars.next() {
+                        match next_char {
+                            '"' => {
+                                string_is_terminated = true;
+                                break;
+                            }
+                            _ => {
+                                literal_value.push(next_char);
+                            }
+                        }
+                    }
+
+                    token_type = Some(TokenType::StringLiteral(literal_value));
+
+                    if !string_is_terminated {
+                        lexical_error = Some(LexicalError::UnterminatedString(line));
+                    }
                 }
+
+                invalid_char => {
+                    token_type = Some(TokenType::InvalidChar);
+                    lexical_error = Some(LexicalError::UnexpectedChar(line, invalid_char));
+                }
+            }
+
+            if lexical_error.is_some() {
+                self.has_errors = true;
             }
 
             match token_type {
                 None => {}
                 Some(token_type) => self.tokens.push(Token {
                     token_type,
+                    lexical_error,
                     line,
                     column,
                 }),
@@ -103,17 +133,17 @@ impl Lexer {
         stderr_stream: &mut dyn Write,
     ) {
         for token in &self.tokens {
-            match token.token_type {
-                TokenType::Invalid(_) => {
-                    writeln!(stderr_stream, "{}", token.as_string());
+            match token.lexical_error {
+                Some(_) => {
+                    writeln!(stderr_stream, "{}", token.as_string()).unwrap();
                 }
 
-                _ => {
-                    writeln!(stdout_stream, "{}", token.as_string());
+                None => {
+                    writeln!(stdout_stream, "{}", token.as_string()).unwrap();
                 }
             }
         }
 
-        writeln!(stdout_stream, "EOF  null");
+        writeln!(stdout_stream, "EOF  null").unwrap();
     }
 }
