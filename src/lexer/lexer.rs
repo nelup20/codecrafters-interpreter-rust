@@ -34,6 +34,17 @@ impl Lexer {
                 ',' => token_type = Some(TokenType::Comma),
                 '.' => token_type = Some(TokenType::Dot),
                 ';' => token_type = Some(TokenType::Semicolon),
+
+                '!' => match input_chars.peek() {
+                    Some('=') => {
+                        token_type = Some(TokenType::BangEqual);
+                        input_chars.next();
+                    },
+                    _ => {
+                        token_type = Some(TokenType::Bang)
+                    }
+                },
+
                 '=' => match input_chars.peek() {
                     Some('=') => {
                         token_type = Some(TokenType::DoubleEqual);
