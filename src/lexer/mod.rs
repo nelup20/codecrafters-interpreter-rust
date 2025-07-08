@@ -1,6 +1,6 @@
 
 pub mod lexer;
-mod token;
-mod token_type;
-mod error;
-mod reserved_keyword;
+pub mod token;
+pub mod token_type;
+pub mod error;
+pub mod reserved_keyword;

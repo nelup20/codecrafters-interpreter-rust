@@ -5,7 +5,7 @@ use crate::lexer::token_type::TokenType;
 use std::io::Write;
 
 pub struct Lexer {
-    tokens: Vec<Token>,
+    pub tokens: Vec<Token>,
     pub has_errors: bool,
 }
 
