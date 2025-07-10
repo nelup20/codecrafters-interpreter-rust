@@ -17,7 +17,7 @@ impl Parser {
     }
 
     pub fn parse(&self) -> ExpressionType {
-        expression(&self.input, 0)
+        expression(&mut self.input.iter().peekable())
     }
 
     pub fn print_result(

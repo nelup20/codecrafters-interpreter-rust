@@ -29,7 +29,7 @@ impl<'a> ExpressionType<'a> {
                 )
             }
 
-            ExpressionType::Grouping(expression) => expression.as_string(),
+            ExpressionType::Grouping(expression) => format!("(group {})", expression.as_string()),
         }
     }
 }
