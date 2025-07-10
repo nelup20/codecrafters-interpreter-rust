@@ -45,6 +45,17 @@ fn main() {
             parser.print_result(parsed_expression, &mut io::stdout(), &mut io::stderr());
         },
 
+        "evaluate" => {
+            if lexer.has_errors {
+                std::process::exit(65);
+            }
+
+            let parser = Parser::new(lexer.tokens);
+            let parsed_expression = parser.parse();
+
+            println!("{}", parsed_expression.evaluate());
+        },
+
         _ => {
             writeln!(io::stderr(), "Unknown command: {}", command).unwrap();
             return;

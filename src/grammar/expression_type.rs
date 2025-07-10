@@ -32,4 +32,11 @@ impl<'a> ExpressionType<'a> {
             ExpressionType::Grouping(expression) => format!("(group {})", expression.as_string()),
         }
     }
+
+    pub fn evaluate(&self) -> String {
+        match self {
+            ExpressionType::Literal(literal) => literal.as_string_for_parser(),
+            _ => "Other".to_string(),
+        }
+    }
 }

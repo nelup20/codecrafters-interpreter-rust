@@ -1,6 +1,6 @@
 use crate::grammar::expression_type::ExpressionType;
 use crate::lexer::token::Token;
-use crate::parser::expression::expression;
+use crate::parser::rules::{get_rule_operators, parse_rule};
 use std::io::Write;
 
 pub struct Parser {
@@ -17,7 +17,7 @@ impl Parser {
     }
 
     pub fn parse(&self) -> ExpressionType {
-        expression(&mut self.input.iter().peekable())
+        parse_rule(0, &mut self.input.iter().peekable(), &get_rule_operators())
     }
 
     pub fn print_result(
