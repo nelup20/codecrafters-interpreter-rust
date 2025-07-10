@@ -18,7 +18,7 @@ pub fn primary<'a>(input: &mut Peekable<Iter<'a, Token>>) -> ExpressionType<'a> 
         TokenType::LeftParen => {
             let expression = expression(input);
             if input
-                .peek()
+                .next()
                 .is_none_or(|token| token.token_type != TokenType::RightParen)
             {
                 panic!("Expected ')' after expression.");
