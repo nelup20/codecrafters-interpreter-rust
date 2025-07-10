@@ -36,9 +36,9 @@ fn main() {
         },
 
         "parse" => {
-            let mut parser = Parser::new();
-            parser.parse(lexer.tokens);
-            parser.print_result(&mut io::stdout(), &mut io::stderr());
+            let parser = Parser::new(lexer.tokens);
+            let parsed_expression = parser.parse();
+            parser.print_result(parsed_expression, &mut io::stdout(), &mut io::stderr());
         },
 
         _ => {

@@ -169,11 +169,11 @@ impl Lexer {
         for token in &self.tokens {
             match token.lexical_error {
                 Some(_) => {
-                    writeln!(stderr_stream, "{}", token.as_string()).unwrap();
+                    writeln!(stderr_stream, "{}", token.as_string_for_lexer()).unwrap();
                 }
 
                 None => {
-                    writeln!(stdout_stream, "{}", token.as_string()).unwrap();
+                    writeln!(stdout_stream, "{}", token.as_string_for_lexer()).unwrap();
                 }
             }
         }

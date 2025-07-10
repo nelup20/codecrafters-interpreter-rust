@@ -1,5 +1,6 @@
 use crate::lexer::reserved_keyword::ReservedKeyword::*;
 
+#[derive(PartialEq, Debug)]
 pub enum ReservedKeyword {
     And,
     Class,
@@ -25,7 +26,28 @@ const RESERVED_KEYWORDS: [&str; 16] = [
 ];
 
 impl ReservedKeyword {
-    pub fn as_string(&self) -> String {
+    pub fn as_string_for_parser(&self) -> String {
+        match self {
+            And => "and".to_string(),
+            Class => "class".to_string(),
+            Else => "else".to_string(),
+            False => "false".to_string(),
+            For => "for".to_string(),
+            Fun => "fun".to_string(),
+            If => "if".to_string(),
+            Nil => "nil".to_string(),
+            Or => "or".to_string(),
+            Print => "print".to_string(),
+            Return => "return".to_string(),
+            Super => "super".to_string(),
+            This => "this".to_string(),
+            True => "true".to_string(),
+            Var => "var".to_string(),
+            While => "while".to_string(),
+        }
+    }
+    
+    pub fn as_string_for_lexer(&self) -> String {
         match self {
             And => "AND and null".to_string(),
             Class => "CLASS class null".to_string(),

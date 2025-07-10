@@ -9,10 +9,14 @@ pub struct Token {
 }
 
 impl Token {
-    pub fn as_string(&self) -> String {
+    pub fn as_string_for_lexer(&self) -> String {
         match &self.lexical_error {
-            None => { self.token_type.as_string() }
+            None => { self.token_type.as_string_for_lexer() }
             Some(error) => { error.as_string() }
         }
+    }
+
+    pub fn as_string_for_parser(&self) -> String {
+        self.token_type.as_string_for_parser()
     }
 }
