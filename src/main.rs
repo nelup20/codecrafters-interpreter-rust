@@ -36,6 +36,10 @@ fn main() {
         },
 
         "parse" => {
+            if lexer.has_errors {
+                std::process::exit(65);
+            }
+
             let parser = Parser::new(lexer.tokens);
             let parsed_expression = parser.parse();
             parser.print_result(parsed_expression, &mut io::stdout(), &mut io::stderr());

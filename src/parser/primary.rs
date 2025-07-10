@@ -21,13 +21,15 @@ pub fn primary<'a>(input: &mut Peekable<Iter<'a, Token>>) -> ExpressionType<'a> 
                 .next()
                 .is_none_or(|token| token.token_type != TokenType::RightParen)
             {
-                panic!("Expected ')' after expression.");
+                eprintln!("Expected ')' after expression.");
+                std::process::exit(65);
             }
 
             ExpressionType::Grouping(Box::new(expression))
         }
         _ => {
-            unreachable!("Current parser doesn't support this token type.")
+            eprintln!("Current parser doesn't support this token type.");
+            std::process::exit(65);
         }
     }
 }
